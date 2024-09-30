@@ -1,4 +1,3 @@
-import { ILoginResponse } from '../@Types/ApiResponse'
 import { fetchPost } from './NetWorkServices'
 
 export const LoginService = async (

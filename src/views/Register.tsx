@@ -15,11 +15,12 @@ import InputAdornment from '@mui/material/InputAdornment'
 import Checkbox from '@mui/material/Checkbox'
 import Button from '@mui/material/Button'
 import FormControlLabel from '@mui/material/FormControlLabel'
-import Divider from '@mui/material/Divider'
-import Box from '@mui/material/Box'
+
+import classnames from 'classnames'
+
+import type { Mode } from '@core/types'
 
 // Third-party Imports
-import classnames from 'classnames'
 
 // Component Imports
 import Logo from '@components/layout/shared/Logo'

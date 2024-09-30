@@ -11,19 +11,19 @@ export default function Page() {
   const [originalProfile, setOriginalProfile] = useState<any>(null)
 
   useEffect(() => {
-    if (UserData === null) {
-      const profileString = localStorage.getItem('profile')
+    const profileString = localStorage.getItem('profile')
 
-      if (profileString) {
-        const profile = JSON.parse(profileString)
+    if (profileString) {
+      const profile = JSON.parse(profileString)
 
+      if (!UserData) {
         setProfilData(profile)
         handleUserData(profile)
       }
-    } else {
+    } else if (UserData) {
       setProfilData(UserData)
     }
-  }, [localStorage.getItem('profile')])
+  }, [UserData, handleUserData])
 
   const handleEditClick = () => {
     setIsEditing(!isEditing)

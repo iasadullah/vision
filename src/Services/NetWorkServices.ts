@@ -1,10 +1,16 @@
+declare global {
+  interface Window {
+    authToken: string | undefined
+  }
+}
+
 const _Url = 'https://springkotlin-production.up.railway.app/api'
 
 const handleLogoutClick = () => {
   localStorage.removeItem('key')
   localStorage.removeItem('role')
   localStorage.removeItem('token')
-  global.authToken = undefined
+  window.authToken = undefined
   window.location.href = '/login'
 }
 
@@ -15,7 +21,7 @@ export const fetchGet = async (apiName: string) => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + global.authToken
+      Authorization: 'Bearer ' + window.authToken
     }
   })
 
@@ -33,7 +39,7 @@ export const fetchPost = async (apiName: string, data: {}) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + global.authToken
+      Authorization: 'Bearer ' + window.authToken
     },
     body: JSON.stringify(data)
   })

@@ -22,8 +22,6 @@ import InputLabel from '@mui/material/InputLabel'
 import InputAdornment from '@mui/material/InputAdornment'
 import IconButton from '@mui/material/IconButton'
 
-import { getInitials } from '../components/Common/CommonFunctions'
-
 interface IAgentProfileProps {
   agentProfile: any
   handleEditClick: () => void
@@ -72,20 +70,9 @@ const Profile = (props: IAgentProfileProps) => {
     })
   }
 
+  console.log('props::', props.agentProfile)
+
   return (
-    // <div className='profile-top-section'>
-    //   <div className='prev-page'>
-    //     <span>Profile Information</span>
-    //   </div>
-    //   {props.isEditing ? (
-    //     <>
-    //       <button onClick={props.handleSaveClick}>Save</button>
-    //       <button onClick={props.handleCancelClick}>Cancel</button>
-    //     </>
-    //   ) : (
-    //     <button onClick={props.handleEditClick}>Edit</button>
-    //   )}
-    // </div>
     <Card>
       <CardHeader title='Profile' />
       <Divider />

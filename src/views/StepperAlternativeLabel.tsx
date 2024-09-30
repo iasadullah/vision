@@ -334,7 +334,7 @@ const StepperAlternativeLabel = () => {
             <Grid item xs={12} sm={6}>
               <DatePicker
                 selected={formData.applicantDetail.dob}
-                onChange={(date: Date) =>
+                onChange={(date: Date | null) =>
                   setFormData({
                     ...formData,
                     applicantDetail: { ...formData.applicantDetail, dob: date }
@@ -407,7 +407,7 @@ const StepperAlternativeLabel = () => {
             <Grid item xs={12} sm={6}>
               <DatePicker
                 selected={formData.exchangeInfo.programCompletionDate}
-                onChange={(date: Date) =>
+                onChange={(date: Date | null) =>
                   setFormData({
                     ...formData,
                     exchangeInfo: { ...formData.exchangeInfo, programCompletionDate: date }
@@ -522,7 +522,7 @@ const StepperAlternativeLabel = () => {
             <Grid item xs={12} sm={6}>
               <DatePicker
                 selected={formData.projectDescription.courseStartDate}
-                onChange={(date: Date) =>
+                onChange={(date: Date | null) =>
                   setFormData({
                     ...formData,
                     projectDescription: { ...formData.projectDescription, courseStartDate: date }
@@ -548,7 +548,7 @@ const StepperAlternativeLabel = () => {
             <Grid item xs={12} sm={6}>
               <DatePicker
                 selected={formData.projectDescription.courseEndDate}
-                onChange={(date: Date) =>
+                onChange={(date: Date | null) =>
                   setFormData({
                     ...formData,
                     projectDescription: { ...formData.projectDescription, courseEndDate: date }
@@ -1104,7 +1104,7 @@ const StepperAlternativeLabel = () => {
                 <Grid item xs={5}>
                   <DatePicker
                     selected={timeline.date}
-                    onChange={(date: Date) => {
+                    onChange={(date: Date | null) => {
                       const newTimelines = [...formData.projectTimelines]
 
                       newTimelines[index] = { ...newTimelines[index], date }

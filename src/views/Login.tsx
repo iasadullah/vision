@@ -36,7 +36,7 @@ import themeConfig from '@configs/themeConfig'
 // Hook Imports
 import { useImageVariant } from '@core/hooks/useImageVariant'
 import { useSettings } from '@core/hooks/useSettings'
-import { LoginService } from '../services/LoginService'
+import { LoginService } from '../Services/LoginService'
 import ApiNames from '@/constants/ApiNames'
 import { useUserContext } from '@/context/UserContext'
 
