@@ -109,6 +109,7 @@ const LoginV2 = ({ mode }: { mode: Mode }) => {
         localStorage.setItem('profile', JSON.stringify(response.result))
         localStorage.setItem('role', response.result.role)
         localStorage.setItem('token', response.result.token)
+
         router.push('/home')
       } else {
         setErrorMsg(response.message || 'Invalid credentials')
