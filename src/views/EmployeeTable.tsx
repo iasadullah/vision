@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 
 import { useReactTable, getCoreRowModel, flexRender, createColumnHelper } from '@tanstack/react-table'
+import type { TableContainerProps } from '@mui/material'
 import {
   Table,
   TableBody,
@@ -17,6 +18,8 @@ import {
   Typography
 } from '@mui/material'
 import { CheckCircleOutline, CancelOutlined } from '@mui/icons-material'
+
+// import { useTheme } from '@mui/material/styles'
 
 import { AllAlumniRequest } from '@/Services/AllRequestService'
 import ApiNames from '@/constants/ApiNames'
@@ -82,12 +85,13 @@ const EmployeeTable: React.FC = () => {
 
   const columnHelper = createColumnHelper<Employee>()
 
-  const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
+  const StyledTableContainer = styled(TableContainer)<TableContainerProps>(() => ({
     maxWidth: '100%',
-    overflowX: 'auto',
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: theme.shape.borderRadius,
-    boxShadow: theme.shadows[2]
+    overflowX: 'auto'
+
+    // backgroundColor: theme.palette.background.paper,
+    // borderRadius: theme.shape.borderRadius,
+    // boxShadow: theme.shadows[2]
   }))
 
   const StyledTable = styled(Table)(({ theme }) => ({

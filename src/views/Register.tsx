@@ -24,6 +24,7 @@ import classnames from 'classnames'
 // Third-party Imports
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
+import type { FormikHelpers } from 'formik'
 
 import type { Mode } from '@core/types'
 
@@ -102,7 +103,20 @@ const RegisterV2 = ({ mode }: { mode: Mode }) => {
     agreeTerms: false
   }
 
-  const onSubmit = async (values, { setSubmitting, setErrors }) => {
+  // Define FormValues type to match your initialValues
+  type FormValues = {
+    email: string
+    password: string
+    contact: string
+    name: string
+    city: string
+    employmentReqion: string
+    dob: string // Ensure this is a string, not string[]
+    attendingYear: string
+    agreeTerms: boolean
+  }
+
+  const onSubmit = async (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
     setError(null)
     setIsLoading(true)
 
@@ -110,7 +124,7 @@ const RegisterV2 = ({ mode }: { mode: Mode }) => {
       const response = await SignUpService(ApiNames.signup, {
         email: values.email,
         password: values.password,
-        contact: values.contact,
+        contact: Number(values.contact),
         name: values.name,
         city: values.city,
         employmentReqion: values.employmentReqion,
@@ -133,18 +147,27 @@ const RegisterV2 = ({ mode }: { mode: Mode }) => {
       // Navigate to login page
       router.push('/login')
     } catch (error) {
-      console.error('Signup failed:', error.message)
-
-      toast.error(error.message || 'Registration failed. Please try again.', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true
-      })
-
-      setError(error instanceof Error ? error.message : 'Registration failed. Please try again.')
+      if (error instanceof Error) {
+        console.error('Signup failed:', error.message)
+        toast.error(error.message || 'Registration failed. Please try again.', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true
+        })
+      } else {
+        console.error('Signup failed:', error)
+        toast.error('Registration failed. Please try again.', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true
+        })
+      }
     } finally {
       setIsLoading(false)
       setSubmitting(false)
