@@ -18,6 +18,8 @@ import Checkbox from '@mui/material/Checkbox'
 import Button from '@mui/material/Button'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Grid from '@mui/material/Grid'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
 
 import classnames from 'classnames'
 
@@ -72,6 +74,16 @@ const RegisterV2 = ({ mode }: { mode: Mode }) => {
 
   const handleClickShowPassword = () => setIsPasswordShown(show => !show)
 
+  const employmentRegions = [
+    'Islamabad',
+    'Punjab',
+    'Khyber Pakhtunkhwa',
+    'Sindh',
+    'Balochistan',
+    'Gilgit Baltistan',
+    'Azad Jammu & Kashmir'
+  ]
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Email is required'),
     password: Yup.string()
@@ -85,7 +97,9 @@ const RegisterV2 = ({ mode }: { mode: Mode }) => {
     contact: Yup.number().typeError('Contact must be a number').required('Contact is required'),
     name: Yup.string().required('Name is required'),
     city: Yup.string().required('City is required'),
-    employmentReqion: Yup.string().required('Employment region is required'),
+    employmentReqion: Yup.string()
+      .oneOf(employmentRegions, 'Please select a valid employment region')
+      .required('Employment region is required'),
     dob: Yup.date().required('Date of birth is required'),
     attendingYear: Yup.number().typeError('Attending year must be a number').required('Attending year is required'),
     agreeTerms: Yup.boolean().oneOf([true], 'You must agree to the terms and conditions')
@@ -283,13 +297,19 @@ const RegisterV2 = ({ mode }: { mode: Mode }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Field
-                        as={TextField}
                         name='employmentReqion'
+                        as={Select}
                         fullWidth
                         label='Employment Region'
                         error={touched.employmentReqion && errors.employmentReqion}
                         helperText={touched.employmentReqion && errors.employmentReqion}
-                      />
+                      >
+                        {employmentRegions.map(region => (
+                          <MenuItem key={region} value={region}>
+                            {region}
+                          </MenuItem>
+                        ))}
+                      </Field>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Field
