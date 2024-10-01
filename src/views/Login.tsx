@@ -109,13 +109,25 @@ const LoginV2 = ({ mode }: { mode: Mode }) => {
         localStorage.setItem('profile', JSON.stringify(response.result))
         localStorage.setItem('role', response.result.role)
         localStorage.setItem('token', response.result.token)
+
+        if (typeof window !== 'undefined') {
+          ;(window as any).authToken = response.result.token
+        }
+
         router.push('/home')
       } else {
         setErrorMsg(response.message || 'Invalid credentials')
       }
     } catch (error) {
       console.error('Login error:', error)
-      setErrorMsg('An error occurred. Please try again.')
+
+      // Extract the error message from the error object
+      const errorMessage =
+        error instanceof Error && error.message && typeof error.message === 'string'
+          ? JSON.parse(error.message).result || 'An error occurred during login'
+          : 'An error occurred during login'
+
+      setErrorMsg(errorMessage)
     } finally {
       setIsLoading(false)
     }

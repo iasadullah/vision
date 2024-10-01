@@ -19,8 +19,10 @@ export const SignUpService = async (
     password: string
     contact: number
     name: string
+    employmentReqion: string
     city: string
-    degree: string
+    attendingYear: string
+    dob: string
   }
 ) => {
   const response = await fetchPost(endpoint, requestData)

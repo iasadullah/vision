@@ -7,6 +7,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
+import { toast } from 'react-toastify'
+
 // MUI Imports
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
@@ -15,12 +17,15 @@ import InputAdornment from '@mui/material/InputAdornment'
 import Checkbox from '@mui/material/Checkbox'
 import Button from '@mui/material/Button'
 import FormControlLabel from '@mui/material/FormControlLabel'
+import Grid from '@mui/material/Grid'
 
 import classnames from 'classnames'
 
-import type { Mode } from '@core/types'
-
 // Third-party Imports
+import { Formik, Form, Field } from 'formik'
+import * as Yup from 'yup'
+
+import type { Mode } from '@core/types'
 
 // Component Imports
 import Logo from '@components/layout/shared/Logo'
@@ -31,6 +36,8 @@ import Illustrations from '@components/Illustrations'
 // Hook Imports
 import { useImageVariant } from '@core/hooks/useImageVariant'
 import { useSettings } from '@core/hooks/useSettings'
+import { SignUpService } from '@/Services/RegisterService'
+import ApiNames from '@/constants/ApiNames'
 
 // import { registerUser } from '@/app/api/Auth/register/auth'
 
@@ -39,11 +46,6 @@ const RegisterV2 = ({ mode }: { mode: Mode }) => {
 
   // States
   const [isPasswordShown, setIsPasswordShown] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [userName, setUserName] = useState('')
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -69,35 +71,83 @@ const RegisterV2 = ({ mode }: { mode: Mode }) => {
 
   const handleClickShowPassword = () => setIsPasswordShown(show => !show)
 
-  const onSubmitPressed = async (event: React.FormEvent) => {
-    event.preventDefault()
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    password: Yup.string()
+      .min(8, 'Password must be at least 8 characters')
+      .max(12, 'Password must not exceed 12 characters')
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w\d!@#$%^&*]{8,12}$/,
+        'Password must contain at least one uppercase letter, one lowercase letter, one digit, and be 8-12 characters long'
+      )
+      .required('Password is required'),
+    contact: Yup.number().typeError('Contact must be a number').required('Contact is required'),
+    name: Yup.string().required('Name is required'),
+    city: Yup.string().required('City is required'),
+    employmentReqion: Yup.string().required('Employment region is required'),
+    dob: Yup.date().required('Date of birth is required'),
+    attendingYear: Yup.number().typeError('Attending year must be a number').required('Attending year is required'),
+    agreeTerms: Yup.boolean().oneOf([true], 'You must agree to the terms and conditions')
+  })
+
+  const initialValues = {
+    email: '',
+    password: '',
+    contact: '',
+    name: '',
+    city: '',
+    employmentReqion: '',
+    dob: '',
+    attendingYear: '',
+    agreeTerms: false
+  }
+
+  const onSubmit = async (values, { setSubmitting, setErrors }) => {
     setError(null)
-
-    // Validate fields before setting loading state
-    if (!email || !password || !userName || !firstName || !lastName) {
-      setError('Please fill in all fields')
-
-      return
-    }
-
     setIsLoading(true)
 
     try {
-      // const result =// await registerUser(email, password, userName, firstName, lastName)
+      const response = await SignUpService(ApiNames.signup, {
+        email: values.email,
+        password: values.password,
+        contact: values.contact,
+        name: values.name,
+        city: values.city,
+        employmentReqion: values.employmentReqion,
+        attendingYear: values.attendingYear,
+        dob: values.dob
+      })
 
-      // console.log('User registered successfully:', result.message)
+      // If we reach here, it means the request was successful
+      console.log('Signup successful', response)
 
+      toast.success('Registration successful!', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true
+      })
+
+      // Navigate to login page
       router.push('/login')
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message)
-      } else {
-        setError('An unexpected error occurred')
-      }
+      console.error('Signup failed:', error.message)
 
-      console.error('Registration error:', error)
+      toast.error(error.message || 'Registration failed. Please try again.', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true
+      })
+
+      setError(error instanceof Error ? error.message : 'Registration failed. Please try again.')
     } finally {
       setIsLoading(false)
+      setSubmitting(false)
     }
   }
 
@@ -138,58 +188,139 @@ const RegisterV2 = ({ mode }: { mode: Mode }) => {
               {/* <Typography variant='h4'>Learning starts from here</Typography>
               <Typography className='mbe-1'>Powered by AI generative tools</Typography> */}
             </div>
-            <form noValidate autoComplete='off' onSubmit={onSubmitPressed} className='flex flex-col gap-5'>
-              <TextField onChange={e => setFirstName(e.target.value)} fullWidth label='First Name' />
-              <TextField onChange={e => setLastName(e.target.value)} fullWidth label='Last Name' />
-              <TextField onChange={e => setUserName(e.target.value)} autoFocus fullWidth label='Email' />
-              <TextField onChange={e => setEmail(e.target.value)} fullWidth label='Contact#' />
-              <TextField onChange={e => setEmail(e.target.value)} fullWidth label='City' />
-              <TextField onChange={e => setEmail(e.target.value)} fullWidth label='Degree' />
+            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+              {({ errors, touched, isSubmitting }) => (
+                <Form className='flex flex-col gap-5'>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <Field
+                        as={TextField}
+                        name='email'
+                        fullWidth
+                        label='Email'
+                        error={touched.email && errors.email}
+                        helperText={touched.email && errors.email}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Field
+                        as={TextField}
+                        name='password'
+                        fullWidth
+                        label='Password'
+                        type={isPasswordShown ? 'text' : 'password'}
+                        error={touched.password && errors.password}
+                        helperText={touched.password && errors.password}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position='end'>
+                              <IconButton
+                                size='small'
+                                edge='end'
+                                onClick={handleClickShowPassword}
+                                onMouseDown={e => e.preventDefault()}
+                              >
+                                <i className={isPasswordShown ? 'ri-eye-off-line' : 'ri-eye-line'} />
+                              </IconButton>
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Field
+                        as={TextField}
+                        name='contact'
+                        fullWidth
+                        label='Contact'
+                        type='tel'
+                        error={touched.contact && errors.contact}
+                        helperText={touched.contact && errors.contact}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Field
+                        as={TextField}
+                        name='name'
+                        fullWidth
+                        label='Name'
+                        error={touched.name && errors.name}
+                        helperText={touched.name && errors.name}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Field
+                        as={TextField}
+                        name='city'
+                        fullWidth
+                        label='City'
+                        error={touched.city && errors.city}
+                        helperText={touched.city && errors.city}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Field
+                        as={TextField}
+                        name='employmentReqion'
+                        fullWidth
+                        label='Employment Region'
+                        error={touched.employmentReqion && errors.employmentReqion}
+                        helperText={touched.employmentReqion && errors.employmentReqion}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Field
+                        as={TextField}
+                        name='dob'
+                        fullWidth
+                        label='Date of Birth'
+                        type='date'
+                        InputLabelProps={{ shrink: true }}
+                        error={touched.dob && errors.dob}
+                        helperText={touched.dob && errors.dob}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Field
+                        as={TextField}
+                        name='attendingYear'
+                        fullWidth
+                        label='Attending Year'
+                        error={touched.attendingYear && errors.attendingYear}
+                        helperText={touched.attendingYear && errors.attendingYear}
+                      />
+                    </Grid>
+                  </Grid>
 
-              <TextField
-                fullWidth
-                label='Password'
-                type={isPasswordShown ? 'text' : 'password'}
-                onChange={e => setPassword(e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <IconButton
-                        size='small'
-                        edge='end'
-                        onClick={handleClickShowPassword}
-                        onMouseDown={e => e.preventDefault()}
-                      >
-                        <i className={isPasswordShown ? 'ri-eye-off-line' : 'ri-eye-line'} />
-                      </IconButton>
-                    </InputAdornment>
-                  )
-                }}
-              />
-              <div className='flex justify-between items-center gap-3'>
-                <FormControlLabel
-                  control={<Checkbox />}
-                  label={
-                    <>
-                      <span>I agree to </span>
-                      <Link className='text-primary' href='/' onClick={e => e.preventDefault()}>
-                        privacy policy & terms
-                      </Link>
-                    </>
-                  }
-                />
-              </div>
-              {error && <Typography color='error'>{error}</Typography>}
-              <Button fullWidth variant='contained' type='submit' disabled={isLoading}>
-                Sign Up
-              </Button>
-              <div className='flex justify-center items-center flex-wrap gap-2'>
-                <Typography>Already have an account?</Typography>
-                <Typography component={Link} href='/login' color='primary'>
-                  Sign in instead
-                </Typography>
-              </div>
-            </form>
+                  <div className='flex justify-between items-center gap-3'>
+                    <FormControlLabel
+                      control={<Field as={Checkbox} name='agreeTerms' color='primary' />}
+                      label={
+                        <>
+                          <span>I agree to </span>
+                          <Link className='text-primary' href='/' onClick={e => e.preventDefault()}>
+                            privacy policy & terms
+                          </Link>
+                        </>
+                      }
+                    />
+                  </div>
+                  {errors.agreeTerms && touched.agreeTerms && (
+                    <Typography color='error'>{errors.agreeTerms}</Typography>
+                  )}
+                  {error && <Typography color='error'>{error}</Typography>}
+                  <Button fullWidth variant='contained' type='submit' disabled={isSubmitting || isLoading}>
+                    Sign Up
+                  </Button>
+                  <div className='flex justify-center items-center flex-wrap gap-2'>
+                    <Typography>Already have an account?</Typography>
+                    <Typography component={Link} href='/login' color='primary'>
+                      Sign in instead
+                    </Typography>
+                  </div>
+                </Form>
+              )}
+            </Formik>
           </div>
         </div>
       </div>
