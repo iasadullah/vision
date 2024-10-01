@@ -1,5 +1,7 @@
 import React from 'react'
+
 import Grid from '@mui/material/Grid'
+
 import BasicDataTables from '@components/BasicDataTables'
 
 type Props = {

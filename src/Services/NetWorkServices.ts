@@ -5,7 +5,9 @@ declare global {
 }
 
 const _Url = 'https://springkotlin-production.up.railway.app/api'
+
 // const _Url = '192.168.50.160:8080/api'
+
 let _token: any = ''
 
 const handleLogoutClick = () => {
@@ -39,6 +41,7 @@ export const fetchGet = async (apiName: string) => {
 
 export const fetchPost = async (apiName: string, data: {}) => {
   _token = localStorage.getItem('token')
+
   const response = await fetch(`${_Url}${apiName}`, {
     method: 'POST',
     headers: {
