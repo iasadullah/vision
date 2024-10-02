@@ -3,7 +3,8 @@ const ApiNames = {
   login: '/users/login',
   allRequest: '/users/all',
   updateAlumniRequest: '/users/updateStatus',
-  UserApplications: '/applications/getUserApplications'
+  UserApplications: '/applications/getUserApplications',
+  userUpdate: '/users/update'
 }
 
 export default ApiNames
