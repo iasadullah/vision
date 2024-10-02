@@ -6,7 +6,8 @@ const ApiNames = {
   updateApplicationRequest: '/applications/update',
   updateAlumniRequest: '/users/updateStatus',
   UserApplications: '/applications/getUserApplications',
-  getApplicationDetails: '/applications/'
+  getApplicationDetails: '/applications/',
+  userUpdate: '/users/update'
 }
 
 export default ApiNames

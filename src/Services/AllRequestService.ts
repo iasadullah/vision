@@ -1,4 +1,4 @@
-import { fetchGet } from './NetWorkServices'
+import { fetchGet, fetchPut } from './NetWorkServices'
 
 export const AllAlumniRequest = async (endpoint: string) => {
   try {
@@ -15,4 +15,20 @@ export const AllAlumniRequest = async (endpoint: string) => {
       throw new Error('An unknown error occurred')
     }
   }
+}
+
+export const UserUpdateService = async (
+  endpoint: string,
+  requestData: {
+    contact: string
+    name: string
+    city: string
+    employmentReqion: string
+    dob: string
+    attendingYear: string
+  }
+) => {
+  const response = await fetchPut(endpoint, requestData)
+
+  return response
 }
