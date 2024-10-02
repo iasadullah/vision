@@ -1,15 +1,43 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useCallback, useMemo, useEffect } from 'react'
 
+import type { UserData } from './UserContext'
 import { UserContext } from './UserContext'
 
-export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const [UserData, setUserData] = useState({})
+export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [userData, setUserData] = useState<UserData>({})
 
-  const handleUserData = (val: any) => {
+  useEffect(() => {
+    // Initialize from localStorage if available
+    const storedData = localStorage.getItem('userData')
+
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData)
+
+        setUserData(parsedData)
+      } catch (error) {
+        console.error('Error parsing stored user data:', error)
+      }
+    }
+  }, [])
+
+  const handleUserData = useCallback((val: UserData) => {
+    console.log('valLLL', val)
     setUserData(val)
-  }
 
-  return <UserContext.Provider value={{ UserData, handleUserData }}>{children}</UserContext.Provider>
+    // Store in localStorage
+    localStorage.setItem('userData', JSON.stringify(val))
+  }, [])
+
+  const contextValue = useMemo(
+    () => ({
+      userData,
+      handleUserData
+    }),
+    [userData, handleUserData]
+  )
+
+  return <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
 }

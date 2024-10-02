@@ -25,7 +25,7 @@ export default function Page() {
     } else {
       getApplication()
     }
-  }, [])
+  }, [router])
 
   const getApplication = async () => {
     try {

@@ -1,6 +1,6 @@
 'use client'
 
-import EmployeeTable from '@/views/EmployeeTable'
+// import EmployeeTable from '@/views/EmployeeTable'
 
 // import StepperAlternativeLabel from '@/views/StepperAlternativeLabel'
 
@@ -10,7 +10,7 @@ export default function Page() {
       Alumni Profiles
       <br />
       {/* <StepperAlternativeLabel /> */}
-      <EmployeeTable />
+      {/* <EmployeeTable /> */}
     </h1>
   )
 }

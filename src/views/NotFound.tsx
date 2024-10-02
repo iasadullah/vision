@@ -1,7 +1,8 @@
 'use client'
 
 // Next Imports
-import Link from 'next/link'
+// import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 // MUI Imports
 import Button from '@mui/material/Button'
@@ -23,6 +24,12 @@ const NotFound = ({ mode }: { mode: Mode }) => {
 
   // Hooks
   const miscBackground = useImageVariant(mode, lightImg, darkImg)
+  const router = useRouter()
+
+  // Function to handle going back
+  const handleGoBack = () => {
+    router.back()
+  }
 
   return (
     <div className='flex items-center justify-center min-bs-[100dvh] relative p-6 overflow-x-hidden'>
@@ -39,9 +46,14 @@ const NotFound = ({ mode }: { mode: Mode }) => {
           src='/images/illustrations/characters/5.png'
           className='object-cover bs-[400px] md:bs-[450px] lg:bs-[500px]'
         />
-        <Button href='/' component={Link} variant='contained'>
-          Back to Home
-        </Button>
+        <div className='flex gap-4'>
+          <Button onClick={handleGoBack} variant='contained'>
+            Go Back
+          </Button>
+          {/* <Button href='/' component={Link} variant='contained'>
+            Back to Home
+          </Button> */}
+        </div>
       </div>
       <Illustrations maskImg={{ src: miscBackground }} />
     </div>
