@@ -98,19 +98,19 @@ const BasicDataTables = (props: Props) => {
             <tbody>
               <tr>
                 <th style={{ textAlign: 'left' }}>Employment Status</th>
-                <td>{props.userListData?.employmentStatus.employmentStatus}</td>
+                <td>{props.userListData?.employmentStatus?.employmentStatus}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Organization Name</th>
-                <td>{props.userListData?.employmentStatus.organizationName}</td>
+                <td>{props.userListData?.employmentStatus?.organizationName}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Designation</th>
-                <td>{props.userListData?.employmentStatus.designation}</td>
+                <td>{props.userListData?.employmentStatus?.designation}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Area of Work</th>
-                <td>{props.userListData?.employmentStatus.areaOfWork}</td>
+                <td>{props.userListData?.employmentStatus?.areaOfWork}</td>
               </tr>
             </tbody>
           </table>
@@ -129,55 +129,55 @@ const BasicDataTables = (props: Props) => {
             <tbody>
               <tr>
                 <th style={{ textAlign: 'left' }}>Project Title</th>
-                <td>{props.userListData?.projectDescription.projectTitle}</td>
+                <td>{props.userListData?.projectDescription?.projectTitle}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Project Duration (weeks)</th>
-                <td>{props.userListData?.projectDescription.projectDuration}</td>
+                <td>{props.userListData?.projectDescription?.projectDuration}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Course Start Date</th>
-                <td>{props.userListData?.projectDescription.courseStartDate}</td>
+                <td>{props.userListData?.projectDescription?.courseStartDate}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Course End Date</th>
-                <td>{props.userListData?.projectDescription.courseEndDate}</td>
+                <td>{props.userListData?.projectDescription?.courseEndDate}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Proposed Venue</th>
-                <td>{props.userListData?.projectDescription.proposedVenue}</td>
+                <td>{props.userListData?.projectDescription?.proposedVenue}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Letter Attached</th>
-                <td>{props.userListData?.projectDescription.isLetterAttached ? 'Yes' : 'No'}</td>
+                <td>{props.userListData?.projectDescription?.isLetterAttached ? 'Yes' : 'No'}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Total Training Hours</th>
-                <td>{props.userListData?.projectDescription.totalTrainingHours}</td>
+                <td>{props.userListData?.projectDescription?.totalTrainingHours}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Hours Per Week</th>
-                <td>{props.userListData?.projectDescription.hoursPerWeek}</td>
+                <td>{props.userListData?.projectDescription?.hoursPerWeek}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Days Per Week</th>
-                <td>{props.userListData?.projectDescription.daysPerWeek}</td>
+                <td>{props.userListData?.projectDescription?.daysPerWeek}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Hours Per Class</th>
-                <td>{props.userListData?.projectDescription.hoursPerClass}</td>
+                <td>{props.userListData?.projectDescription?.hoursPerClass}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Total Audience</th>
-                <td>{props.userListData?.projectDescription.totalAudience}</td>
+                <td>{props.userListData?.projectDescription?.totalAudience}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Male Audience</th>
-                <td>{props.userListData?.projectDescription.maleAudience}</td>
+                <td>{props.userListData?.projectDescription?.maleAudience}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Female Audience</th>
-                <td>{props.userListData?.projectDescription.femaleAudience}</td>
+                <td>{props.userListData?.projectDescription?.femaleAudience}</td>
               </tr>
             </tbody>
           </table>
@@ -196,35 +196,35 @@ const BasicDataTables = (props: Props) => {
             <tbody>
               <tr>
                 <th style={{ textAlign: 'left' }}>What</th>
-                <td>{props.userListData?.executiveSummary.summaryWhat}</td>
+                <td>{props.userListData?.executiveSummary?.summaryWhat}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Where</th>
-                <td>{props.userListData?.executiveSummary.summaryWhere}</td>
+                <td>{props.userListData?.executiveSummary?.summaryWhere}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>When</th>
-                <td>{props.userListData?.executiveSummary.summaryWhen}</td>
+                <td>{props.userListData?.executiveSummary?.summaryWhen}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>How</th>
-                <td>{props.userListData?.executiveSummary.summaryHow}</td>
+                <td>{props.userListData?.executiveSummary?.summaryHow}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Why</th>
-                <td>{props.userListData?.executiveSummary.summaryWhy}</td>
+                <td>{props.userListData?.executiveSummary?.summaryWhy}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Who</th>
-                <td>{props.userListData?.executiveSummary.summaryWho}</td>
+                <td>{props.userListData?.executiveSummary?.summaryWho}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Direct Beneficiaries</th>
-                <td>{props.userListData?.executiveSummary.summaryDirectBeneficiaries}</td>
+                <td>{props.userListData?.executiveSummary?.summaryDirectBeneficiaries}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Indirect Beneficiaries</th>
-                <td>{props.userListData?.executiveSummary.summaryInDirectBeneficiaries}</td>
+                <td>{props.userListData?.executiveSummary?.summaryInDirectBeneficiaries}</td>
               </tr>
             </tbody>
           </table>
@@ -243,27 +243,27 @@ const BasicDataTables = (props: Props) => {
             <tbody>
               <tr>
                 <th style={{ textAlign: 'left' }}>Identified Problem</th>
-                <td>{props.userListData?.projectJustification.identifiedProblem}</td>
+                <td>{props.userListData?.projectJustification?.identifiedProblem}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Community Need</th>
-                <td>{props.userListData?.projectJustification.communityNeed}</td>
+                <td>{props.userListData?.projectJustification?.communityNeed}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Relevance to Standard</th>
-                <td>{props.userListData?.projectJustification.relevanceToStandard}</td>
+                <td>{props.userListData?.projectJustification?.relevanceToStandard}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Impact on Beneficiaries</th>
-                <td>{props.userListData?.projectJustification.impactOnBeneficiaries}</td>
+                <td>{props.userListData?.projectJustification?.impactOnBeneficiaries}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Long-Term Benefits</th>
-                <td>{props.userListData?.projectJustification.longTermBenefits}</td>
+                <td>{props.userListData?.projectJustification?.longTermBenefits}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Necessity</th>
-                <td>{props.userListData?.projectJustification.necessity}</td>
+                <td>{props.userListData?.projectJustification?.necessity}</td>
               </tr>
             </tbody>
           </table>
@@ -280,7 +280,7 @@ const BasicDataTables = (props: Props) => {
               </tr>
             </thead>
             <tbody>
-              {props.userListData?.deliverables.map((item: any, index: number) => (
+              {props.userListData?.deliverables?.map((item: any, index: number) => (
                 <tr key={index}>
                   <td style={{ textAlign: 'left' }}>{index + 1}</td>
                   <td style={{ textAlign: 'left' }}>{item}</td>
@@ -303,23 +303,23 @@ const BasicDataTables = (props: Props) => {
             <tbody>
               <tr>
                 <th style={{ textAlign: 'left' }}>Module Design</th>
-                <td>{props.userListData?.methodology.moduleDesign}</td>
+                <td>{props.userListData?.methodology?.moduleDesign}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Procurement</th>
-                <td>{props.userListData?.methodology.procurement}</td>
+                <td>{props.userListData?.methodology?.procurement}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Trainee Recruitment</th>
-                <td>{props.userListData?.methodology.traineeRecruitment}</td>
+                <td>{props.userListData?.methodology?.traineeRecruitment}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Opening Ceremony</th>
-                <td>{props.userListData?.methodology.openingCeremony}</td>
+                <td>{props.userListData?.methodology?.openingCeremony}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Media Engagement</th>
-                <td>{props.userListData?.methodology.mediaEngagement}</td>
+                <td>{props.userListData?.methodology?.mediaEngagement}</td>
               </tr>
             </tbody>
           </table>
@@ -337,7 +337,7 @@ const BasicDataTables = (props: Props) => {
               </tr>
             </thead>
             <tbody>
-              {props.userListData?.projectTimelines.map((timeline: any, index: number) => (
+              {props.userListData?.projectTimelines?.map((timeline: any, index: number) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td style={{ textAlign: 'left' }}>{timeline.title}</td>
@@ -361,7 +361,7 @@ const BasicDataTables = (props: Props) => {
               </tr>
             </thead>
             <tbody>
-              {props.userListData?.moduleOutlines.map((outline: any, index: number) => (
+              {props.userListData?.moduleOutlines?.map((outline: any, index: number) => (
                 <tr key={index}>
                   <td style={{ textAlign: 'left' }}>Week {outline.weekNumber}</td>
                   <td style={{ textAlign: 'left' }}>{outline.topics ? outline.topics : 'No topics available'}</td>
@@ -387,31 +387,31 @@ const BasicDataTables = (props: Props) => {
             <tbody>
               <tr>
                 <th style={{ textAlign: 'left' }}>Traditional Media Plan</th>
-                <td>{props.userListData?.mediaPlan.traditionalMediaPlan}</td>
+                <td>{props.userListData?.mediaPlan?.traditionalMediaPlan}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Social Media Platforms</th>
-                <td>{props.userListData?.mediaPlan.socialMediaPlatforms}</td>
+                <td>{props.userListData?.mediaPlan?.socialMediaPlatforms}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Social Media Strategy</th>
-                <td>{props.userListData?.mediaPlan.socialMediaStrategy}</td>
+                <td>{props.userListData?.mediaPlan?.socialMediaStrategy}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Frequency of Posts</th>
-                <td>{props.userListData?.mediaPlan.frequencyOfPosts}</td>
+                <td>{props.userListData?.mediaPlan?.frequencyOfPosts}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Target Audience</th>
-                <td>{props.userListData?.mediaPlan.targetAudience}</td>
+                <td>{props.userListData?.mediaPlan?.targetAudience}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Promotional Materials</th>
-                <td>{props.userListData?.mediaPlan.promotionalMaterials}</td>
+                <td>{props.userListData?.mediaPlan?.promotionalMaterials}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Branding Acknowledgement</th>
-                <td>{props.userListData?.mediaPlan.brandingAcknowledgement}</td>
+                <td>{props.userListData?.mediaPlan?.brandingAcknowledgement}</td>
               </tr>
             </tbody>
           </table>
@@ -428,7 +428,7 @@ const BasicDataTables = (props: Props) => {
               </tr>
             </thead>
             <tbody>
-              {props.userListData?.monitoringMethods.map((method: any, index: number) => (
+              {props.userListData?.monitoringMethods?.map((method: any, index: number) => (
                 <tr key={index}>
                   <td style={{ textAlign: 'left' }}>{index + 1}</td>
                   <td style={{ textAlign: 'left' }}>{method}</td>
@@ -450,7 +450,7 @@ const BasicDataTables = (props: Props) => {
               </tr>
             </thead>
             <tbody>
-              {props.userListData?.projectPartners.map((partner: any, index: number) => (
+              {props.userListData?.projectPartners?.map((partner: any, index: number) => (
                 <tr key={index}>
                   <td style={{ textAlign: 'left' }}>{index + 1}</td>
                   <td style={{ textAlign: 'left' }}>{partner.name}</td>
@@ -472,7 +472,7 @@ const BasicDataTables = (props: Props) => {
               </tr>
             </thead>
             <tbody>
-              {props.userListData?.budgetCategories.map((category: any, index: number) => (
+              {props.userListData?.budgetCategories?.map((category: any, index: number) => (
                 <React.Fragment key={index}>
                   <tr>
                     <th style={{ textAlign: 'left' }}>Title</th>
