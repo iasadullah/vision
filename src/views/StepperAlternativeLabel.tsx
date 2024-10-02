@@ -1,7 +1,10 @@
 'use client'
 
 // React Imports
-import { useState } from 'react'
+
+import React, { useState } from 'react'
+
+import { useRouter } from 'next/navigation'
 
 // MUI Imports
 import Card from '@mui/material/Card'
@@ -24,9 +27,10 @@ import IconButton from '@mui/material/IconButton'
 import { toast } from 'react-toastify'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { format } from 'date-fns'
 
 // Component Imports
-import { Divider } from '@mui/material'
+import { CircularProgress, Divider } from '@mui/material'
 
 import DirectionalIcon from '@components/DirectionalIcon'
 
@@ -34,9 +38,11 @@ import DirectionalIcon from '@components/DirectionalIcon'
 import StepperWrapper from '@core/styles/stepper'
 import StepperCustomDot from '@components/stepper-dot'
 
+import { GrantApplicationSubmitServices } from '@/Services/GrantApplicationSubmit'
+
 type TimelineItem = {
   title: string
-  date: Date | null
+  date: string | null
 }
 
 type ModuleOutlineItem = {
@@ -68,14 +74,18 @@ type BudgetCategory = {
 
 type FormDataType = {
   applicantDetail: {
+    fullName: string
+    city: string
+    contact: string
+    email: string
     gender: string
-    dob: Date | null
+    dob: string | null
     postalAddress: string
   }
   exchangeInfo: {
     programName: string
     hostInstitution: string
-    programCompletionDate: Date | null
+    programCompletionDate: string | null
   }
   employmentStatus: {
     employmentStatus: string
@@ -86,8 +96,8 @@ type FormDataType = {
   projectDescription: {
     projectTitle: string
     projectDuration: number
-    courseStartDate: Date | null
-    courseEndDate: Date | null
+    courseStartDate: string | null
+    courseEndDate: string | null
     proposedVenue: string
     isLetterAttached: boolean
     totalTrainingHours: number
@@ -164,10 +174,11 @@ const steps = [
 
 const StepperAlternativeLabel = () => {
   // States
+  const router = useRouter()
   const [activeStep, setActiveStep] = useState(0)
 
   const [formData, setFormData] = useState<FormDataType>({
-    applicantDetail: { gender: '', dob: null, postalAddress: '' },
+    applicantDetail: { fullName: '', city: '', contact: '', email: '', gender: '', dob: null, postalAddress: '' },
     exchangeInfo: { programName: '', hostInstitution: '', programCompletionDate: null },
     employmentStatus: { employmentStatus: '', organizationName: '', designation: '', areaOfWork: '' },
     projectDescription: {
@@ -225,21 +236,23 @@ const StepperAlternativeLabel = () => {
     monitoringMethods: [],
     projectPartners: [],
     budgetCategories: []
-
-    // ... initialize other form data fields ...
   })
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  const [error, setError] = useState<string>('')
 
   const handleReset = () => {
     setActiveStep(0)
     setFormData({
-      applicantDetail: { gender: '', dob: null, postalAddress: '' },
-      exchangeInfo: { programName: '', hostInstitution: '', programCompletionDate: null },
+      applicantDetail: { fullName: '', city: '', contact: '', email: '', gender: '', dob: '', postalAddress: '' },
+      exchangeInfo: { programName: '', hostInstitution: '', programCompletionDate: '' },
       employmentStatus: { employmentStatus: '', organizationName: '', designation: '', areaOfWork: '' },
       projectDescription: {
         projectTitle: '',
         projectDuration: 0,
-        courseStartDate: null,
-        courseEndDate: null,
+        courseStartDate: '',
+        courseEndDate: '',
         proposedVenue: '',
         isLetterAttached: false,
         totalTrainingHours: 0,
@@ -297,6 +310,7 @@ const StepperAlternativeLabel = () => {
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1)
+    setError('')
 
     if (activeStep === steps.length - 1) {
       toast.success('Form Submitted')
@@ -304,7 +318,28 @@ const StepperAlternativeLabel = () => {
   }
 
   const handleBack = () => {
+    setError('')
     setActiveStep(prevActiveStep => prevActiveStep - 1)
+  }
+
+  const handleSubmit = async () => {
+    try {
+      setIsLoading(true)
+
+      const response = await GrantApplicationSubmitServices(formData)
+
+      if (response.result.applicationId) {
+        setIsLoading(false)
+        router.push(`/userApplication?applicationId=${response.result.applicationId}`)
+      } else {
+        setError(response.result)
+        setIsLoading(false)
+      }
+    } catch (err) {
+      setIsLoading(false)
+      setError('SomeThing Went Wrong Please Try Again')
+      console.log(err)
+    }
   }
 
   const renderStepContent = (activeStep: number) => {
@@ -312,6 +347,19 @@ const StepperAlternativeLabel = () => {
       case 0:
         return (
           <>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label='Full Name (As per CNIC)'
+                value={formData.applicantDetail.fullName}
+                onChange={e =>
+                  setFormData({
+                    ...formData,
+                    applicantDetail: { ...formData.applicantDetail, fullName: e.target.value }
+                  })
+                }
+              />
+            </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
                 <InputLabel>Gender</InputLabel>
@@ -333,17 +381,20 @@ const StepperAlternativeLabel = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <DatePicker
-                selected={formData.applicantDetail.dob}
+                selected={formData.applicantDetail.dob ? new Date(formData.applicantDetail.dob) : null}
                 onChange={(date: Date | null) =>
                   setFormData({
                     ...formData,
-                    applicantDetail: { ...formData.applicantDetail, dob: date }
+                    applicantDetail: { ...formData.applicantDetail, dob: date ? format(date, 'yyyy-MM-dd') : null }
                   })
                 }
                 customInput={
                   <TextField
                     fullWidth
                     label='Date of Birth'
+                    value={
+                      formData.applicantDetail.dob ? format(new Date(formData.applicantDetail.dob), 'yyyy-MM-dd') : ''
+                    }
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position='end'>
@@ -369,6 +420,32 @@ const StepperAlternativeLabel = () => {
                   setFormData({
                     ...formData,
                     applicantDetail: { ...formData.applicantDetail, postalAddress: e.target.value }
+                  })
+                }
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label='Contact No'
+                value={formData.applicantDetail.contact}
+                onChange={e =>
+                  setFormData({
+                    ...formData,
+                    applicantDetail: { ...formData.applicantDetail, contact: e.target.value }
+                  })
+                }
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label='Email Address'
+                value={formData.applicantDetail.email}
+                onChange={e =>
+                  setFormData({
+                    ...formData,
+                    applicantDetail: { ...formData.applicantDetail, email: e.target.value }
                   })
                 }
               />
@@ -406,17 +483,29 @@ const StepperAlternativeLabel = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <DatePicker
-                selected={formData.exchangeInfo.programCompletionDate}
+                selected={
+                  formData.exchangeInfo.programCompletionDate
+                    ? new Date(formData.exchangeInfo.programCompletionDate)
+                    : null
+                }
                 onChange={(date: Date | null) =>
                   setFormData({
                     ...formData,
-                    exchangeInfo: { ...formData.exchangeInfo, programCompletionDate: date }
+                    exchangeInfo: {
+                      ...formData.exchangeInfo,
+                      programCompletionDate: date ? format(date, 'yyyy-MM-dd') : null // Format the date here
+                    }
                   })
                 }
                 customInput={
                   <TextField
                     fullWidth
                     label='Program Completion Date'
+                    value={
+                      formData.exchangeInfo.programCompletionDate
+                        ? format(new Date(formData.exchangeInfo.programCompletionDate), 'yyyy-MM-dd')
+                        : ''
+                    } // Format the date for display
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position='end'>
@@ -521,17 +610,29 @@ const StepperAlternativeLabel = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <DatePicker
-                selected={formData.projectDescription.courseStartDate}
+                selected={
+                  formData.projectDescription.courseStartDate
+                    ? new Date(formData.projectDescription.courseStartDate)
+                    : null
+                }
                 onChange={(date: Date | null) =>
                   setFormData({
                     ...formData,
-                    projectDescription: { ...formData.projectDescription, courseStartDate: date }
+                    projectDescription: {
+                      ...formData.projectDescription,
+                      courseStartDate: date ? format(date, 'yyyy-MM-dd') : null // Format the date here
+                    }
                   })
                 }
                 customInput={
                   <TextField
                     fullWidth
                     label='Course Start Date'
+                    value={
+                      formData.projectDescription.courseStartDate
+                        ? format(new Date(formData.projectDescription.courseStartDate), 'yyyy-MM-dd')
+                        : ''
+                    } // Format the date for display
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position='end'>
@@ -547,17 +648,27 @@ const StepperAlternativeLabel = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <DatePicker
-                selected={formData.projectDescription.courseEndDate}
+                selected={
+                  formData.projectDescription.courseEndDate ? new Date(formData.projectDescription.courseEndDate) : null
+                }
                 onChange={(date: Date | null) =>
                   setFormData({
                     ...formData,
-                    projectDescription: { ...formData.projectDescription, courseEndDate: date }
+                    projectDescription: {
+                      ...formData.projectDescription,
+                      courseEndDate: date ? format(date, 'yyyy-MM-dd') : null // Format the date here
+                    }
                   })
                 }
                 customInput={
                   <TextField
                     fullWidth
                     label='Course End Date'
+                    value={
+                      formData.projectDescription.courseEndDate
+                        ? format(new Date(formData.projectDescription.courseEndDate), 'yyyy-MM-dd')
+                        : ''
+                    } // Format the date for display
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position='end'>
@@ -1103,17 +1214,19 @@ const StepperAlternativeLabel = () => {
                 </Grid>
                 <Grid item xs={5}>
                   <DatePicker
-                    selected={timeline.date}
+                    selected={timeline.date ? new Date(timeline.date) : null} // Convert timeline.date to Date object
                     onChange={(date: Date | null) => {
                       const newTimelines = [...formData.projectTimelines]
 
-                      newTimelines[index] = { ...newTimelines[index], date }
+                      // Format the date as YYYY-MM-DD before updating the state
+                      newTimelines[index] = { ...newTimelines[index], date: date ? format(date, 'yyyy-MM-dd') : null }
                       setFormData({ ...formData, projectTimelines: newTimelines })
                     }}
                     customInput={
                       <TextField
                         fullWidth
                         label={`Timeline ${index + 1} Date`}
+                        value={timeline.date ? format(new Date(timeline.date), 'yyyy-MM-dd') : ''} // Format the date for display
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position='end'>
@@ -1704,7 +1817,16 @@ const StepperAlternativeLabel = () => {
 
   return (
     <>
-      <StepperWrapper>
+      <StepperWrapper
+        style={{
+          maxWidth: '100%',
+          width: '100%',
+          overflowX: 'auto', // Enable horizontal scrolling
+          whiteSpace: 'nowrap',
+          scrollbarWidth: 'none', // Hide scrollbar (for Firefox)
+          msOverflowStyle: 'none' // Hide scrollbar (for IE and Edge)
+        }}
+      >
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map(label => {
             return (
@@ -1762,19 +1884,38 @@ const StepperAlternativeLabel = () => {
                     >
                       Back
                     </Button>
-                    <Button
-                      variant='contained'
-                      onClick={handleNext}
-                      endIcon={
-                        activeStep === steps.length - 1 ? (
-                          <i className='ri-check-line' />
-                        ) : (
-                          <DirectionalIcon ltrIconClass='ri-arrow-right-line' rtlIconClass='ri-arrow-left-line' />
-                        )
-                      }
-                    >
-                      {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
-                    </Button>
+                    {error && (
+                      <Typography color='error' align='center'>
+                        {error}
+                      </Typography>
+                    )}
+                    {isLoading ? (
+                      <Button
+                        variant='contained'
+                        startIcon={isLoading ? <CircularProgress size={20} color='inherit' /> : null}
+                      ></Button>
+                    ) : (
+                      <Button
+                        variant='contained'
+                        onClick={() => {
+                          if (activeStep === steps.length - 1) {
+                            handleSubmit()
+                          } else {
+                            handleNext()
+                          }
+                        }}
+                        startIcon={isLoading ? <CircularProgress size={20} color='inherit' /> : null}
+                        endIcon={
+                          activeStep === steps.length - 1 ? (
+                            <i className='ri-check-line' />
+                          ) : (
+                            <DirectionalIcon ltrIconClass='ri-arrow-right-line' rtlIconClass='ri-arrow-left-line' />
+                          )
+                        }
+                      >
+                        {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
+                      </Button>
+                    )}
                   </Grid>
                 </Grid>
               </form>
