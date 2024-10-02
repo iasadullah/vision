@@ -1,7 +1,7 @@
 'use client'
 
 // React Imports
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 // Next Imports
 import Link from 'next/link'
@@ -222,8 +222,7 @@ const RegisterV2 = ({ mode }: { mode: Mode }) => {
 
           <div className='flex flex-col gap-5 is-full sm:is-auto md:is-full sm:max-is-[400px] md:max-is-[unset]'>
             <div>
-              {/* <Typography variant='h4'>Learning starts from here</Typography>
-              <Typography className='mbe-1'>Powered by AI generative tools</Typography> */}
+              <Typography variant='h4'>Sign Up</Typography>
             </div>
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
               {({ errors, touched, isSubmitting }) => (

@@ -12,9 +12,8 @@ import '@/app/globals.css'
 import '@assets/iconify-icons/generated-icons.css'
 
 export const metadata = {
-  title: 'Vision - Material Design Next.js Admin Template',
-  description:
-    'Vision - Material Design Next.js Admin Dashboard Template - is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.'
+  title: 'Vision ',
+  description: 'Vision'
 }
 
 const RootLayout = ({ children }: ChildrenType) => {

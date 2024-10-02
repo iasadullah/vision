@@ -1,7 +1,7 @@
 'use client'
 
 // React Imports
-import { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import type { MouseEvent } from 'react'
 
 // Next Imports
@@ -40,11 +40,22 @@ const UserDropdown = () => {
 
   // Refs
   const anchorRef = useRef<HTMLDivElement>(null)
+  const [profileData, setProfileData] = useState<any>(null)
 
   // Hooks
   const router = useRouter()
 
   const { settings } = useSettings()
+
+  useEffect(() => {
+    const profileString = localStorage.getItem('profile')
+
+    if (profileString) {
+      const profile = JSON.parse(profileString)
+
+      setProfileData(profile)
+    }
+  }, [])
 
   const handleDropdownOpen = () => {
     !open ? setOpen(true) : setOpen(false)
@@ -109,20 +120,20 @@ const UserDropdown = () => {
                     <Avatar alt='John Doe' src='/images/avatars/1.png' />
                     <div className='flex items-start flex-col'>
                       <Typography className='font-medium' color='text.primary'>
-                        John Doe
+                        {profileData?.name}
                       </Typography>
-                      <Typography variant='caption'>admin@materio.com</Typography>
+                      <Typography variant='caption'>{profileData?.email}</Typography>
                     </div>
                   </div>
                   <Divider className='mlb-1' />
-                  <MenuItem className='gap-3' onClick={e => handleDropdownClose(e)}>
+                  {/* <MenuItem className='gap-3' onClick={e => handleDropdownClose(e)}>
                     <i className='ri-user-3-line' />
                     <Typography color='text.primary'>My Profile</Typography>
-                  </MenuItem>
-                  <MenuItem className='gap-3' onClick={e => handleDropdownClose(e)}>
+                  </MenuItem> */}
+                  {/* <MenuItem className='gap-3' onClick={e => handleDropdownClose(e)}>
                     <i className='ri-settings-4-line' />
                     <Typography color='text.primary'>Settings</Typography>
-                  </MenuItem>
+                  </MenuItem> */}
                   {/* <MenuItem className='gap-3' onClick={e => handleDropdownClose(e)}>
                     <i className='ri-money-dollar-circle-line' />
                     <Typography color='text.primary'>Pricing</Typography>

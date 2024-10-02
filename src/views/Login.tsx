@@ -122,7 +122,7 @@ const LoginV2 = ({ mode }: { mode: Mode }) => {
         localStorage.setItem('userData', JSON.stringify(userData))
 
         if (userData.role === 'admin') {
-          router.push('/admin-dashboard')
+          router.push('/home')
         } else {
           router.push('/profile')
         }
@@ -210,12 +210,12 @@ const LoginV2 = ({ mode }: { mode: Mode }) => {
                     )
                   }}
                 />
-                <div className='flex justify-between items-center flex-wrap gap-x-3 gap-y-1'>
+                {/* <div className='flex justify-between items-center flex-wrap gap-x-3 gap-y-1'>
                   <FormControlLabel control={<Checkbox />} label='Remember me' />
                   <Typography className='text-end' color='primary' component={Link}>
                     Forgot password?
                   </Typography>
-                </div>
+                </div> */}
                 {errorMsg && (
                   <Typography color='error' align='center'>
                     {errorMsg}

@@ -4,12 +4,11 @@ import { withAuth } from '@/components/withAuth'
 
 const Page = () => {
   return (
-    <h1>
-      Registration Access:
+    <div>
+      <h1>User Requests</h1>
       <br />
-      {/* <StepperAlternativeLabel /> */}
       <EmployeeTable />
-    </h1>
+    </div>
   )
 }
 

@@ -6,11 +6,10 @@ import ApplicationsTable from '@/views/ApplicationsTable'
 
 export default function Page() {
   return (
-    <h1>
-      Grant Applications
+    <div>
+      <h1>Grant Applications</h1>
       <br />
-      {/* <StepperAlternativeLabel /> */}
       <ApplicationsTable />
-    </h1>
+    </div>
   )
 }
