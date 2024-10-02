@@ -1,16 +1,16 @@
 'use client'
 
-import EmployeeTable from '@/views/EmployeeTable'
+import ApplicationsTable from '@/views/ApplicationsTable'
 
 // import StepperAlternativeLabel from '@/views/StepperAlternativeLabel'
 
 export default function Page() {
   return (
     <h1>
-      Alumni Profiles
+      Grant Applications
       <br />
       {/* <StepperAlternativeLabel /> */}
-      <EmployeeTable />
+      <ApplicationsTable />
     </h1>
   )
 }

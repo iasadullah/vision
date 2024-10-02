@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import ApplicationList from '@/views/ApplicationList'
 
@@ -12,6 +12,8 @@ import ApiNames from '@/constants/ApiNames'
 
 export default function Page() {
   const router = useRouter()
+
+  const searchParams = useSearchParams()
 
   const [userListData, setUserListData] = useState<any>(null)
 
@@ -27,10 +29,10 @@ export default function Page() {
 
   const getApplication = async () => {
     try {
-      const response = await getUserApplications(ApiNames.UserApplications)
+      const response = await getUserApplications(ApiNames.getApplicationDetails + searchParams.get('applicationId'))
 
-      if (response.result.length > 0) {
-        setUserListData(response.result[0])
+      if (response.result) {
+        setUserListData(response.result)
       }
     } catch (error) {
       console.error('Login error:', error)

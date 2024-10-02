@@ -27,16 +27,32 @@ const BasicDataTables = (props: Props) => {
             </thead>
             <tbody>
               <tr>
+                <th style={{ textAlign: 'left' }}>Full Name</th>
+                <td>{props.userListData?.applicantDetail?.fullName}</td>
+              </tr>
+              <tr>
+                <th style={{ textAlign: 'left' }}>Email</th>
+                <td>{props.userListData?.applicantDetail?.email}</td>
+              </tr>
+              <tr>
                 <th style={{ textAlign: 'left' }}>Gender</th>
-                <td>Hamza</td>
+                <td>{props.userListData?.applicantDetail?.gender}</td>
+              </tr>
+              <tr>
+                <th style={{ textAlign: 'left' }}>Contact</th>
+                <td>{props.userListData?.applicantDetail?.contact}</td>
+              </tr>{' '}
+              <tr>
+                <th style={{ textAlign: 'left' }}>City</th>
+                <td>{props.userListData?.applicantDetail?.city}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>Postal Address</th>
-                <td>23</td>
+                <td>{props.userListData?.applicantDetail?.postalAddress}</td>
               </tr>
               <tr>
                 <th style={{ textAlign: 'left' }}>DOB</th>
-                <td>23 feb</td>
+                <td>{props.userListData?.applicantDetail?.dob}</td>
               </tr>
             </tbody>
           </table>
