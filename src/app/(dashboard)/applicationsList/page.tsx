@@ -8,6 +8,7 @@ export default function Page() {
   return (
     <div>
       <h1>Grant Applications</h1>
+
       <br />
       <ApplicationsTable />
     </div>

@@ -53,7 +53,7 @@ const themeConfig: Config = {
   templateName: 'Vision',
   homePageUrl: '/home',
   settingsCookieName: 'materio-mui-next-demo',
-  mode: 'system', // 'system', 'light', 'dark'
+  mode: 'light', // 'system', 'light', 'dark'
   skin: 'default', // 'default', 'bordered'
   semiDark: false, // true, false
   layout: 'vertical', // 'vertical', 'collapsed', 'horizontal'

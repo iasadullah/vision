@@ -15,7 +15,8 @@ import {
   IconButton,
   CircularProgress,
   Box,
-  Typography
+  Typography,
+  Button
 } from '@mui/material'
 import { CheckCircleOutline, CancelOutlined } from '@mui/icons-material'
 
@@ -24,6 +25,7 @@ import { CheckCircleOutline, CancelOutlined } from '@mui/icons-material'
 import { AllAlumniRequest } from '@/Services/AllRequestService'
 import ApiNames from '@/constants/ApiNames'
 import { fetchPut } from '@/Services/NetWorkServices'
+import { handleExport } from '@/utils/CommonFunction'
 
 type Employee = {
   id: number
@@ -204,6 +206,16 @@ const EmployeeTable: React.FC = () => {
 
   return (
     <>
+      <Button
+        variant='contained'
+        type='submit'
+        onClick={() => {
+          handleExport(data)
+        }}
+        style={{ marginBottom: '20px' }}
+      >
+        Export Csv
+      </Button>
       {isLoading ? (
         <Box display='flex' justifyContent='center' alignItems='center' height='200px'>
           <CircularProgress />

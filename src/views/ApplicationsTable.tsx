@@ -17,7 +17,8 @@ import {
   IconButton,
   CircularProgress,
   Box,
-  Typography
+  Typography,
+  Button
 } from '@mui/material'
 import { CheckCircleOutline, CancelOutlined } from '@mui/icons-material'
 
@@ -28,6 +29,7 @@ import { AllAlumniRequest } from '@/Services/AllRequestService'
 import ApiNames from '@/constants/ApiNames'
 
 import { fetchPut } from '@/Services/NetWorkServices'
+import { handleExport } from '@/utils/CommonFunction'
 
 type ApplicationsList = {
   id: number
@@ -38,17 +40,27 @@ type ApplicationsList = {
   status: string
 }
 
-const ApplicationsTable: React.FC = () => {
+const ApplicationsTable = () => {
   const [data, setData] = useState<ApplicationsList[]>([])
   const [updateTrigger, setUpdateTrigger] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const [isAdmin, setIsAdmin] = useState(false)
   const router = useRouter()
 
   const getAllRequest = useCallback(async () => {
     setIsLoading(true)
 
     try {
-      const response = await AllAlumniRequest(ApiNames.allApplications)
+      const profileString = localStorage.getItem('role')
+      let response: any
+
+      if (profileString?.toLowerCase() === 'alumni') {
+        setIsAdmin(false)
+        response = await AllAlumniRequest(ApiNames.UserApplications)
+      } else {
+        setIsAdmin(true)
+        response = await AllAlumniRequest(ApiNames.allApplications)
+      }
 
       if (response && response.result) {
         setData(response.result)
@@ -144,53 +156,61 @@ const ApplicationsTable: React.FC = () => {
         />
       )
     }),
-    columnHelper.accessor('id', {
-      id: 'updateStatus',
-      header: 'UPDATE STATUS',
-      cell: info => {
-        const status = info.row.original.status
+    ...(isAdmin
+      ? [
+          columnHelper.accessor('id', {
+            id: 'updateStatus',
+            header: 'UPDATE STATUS',
+            cell: info => {
+              const status = info.row.original.status
 
-        if (status === 'APPROVED') {
-          return (
-            <IconButton color='error' onClick={() => handleStatusUpdate(info.row.original.id, 'REJECTED')} size='small'>
-              <CancelOutlined />
-              <span style={{ marginLeft: '4px', fontSize: '0.8rem' }}>Reject</span>
-            </IconButton>
-          )
-        } else if (status === 'REJECTED') {
-          return (
-            <IconButton
-              color='success'
-              onClick={() => handleStatusUpdate(info.row.original.id, 'APPROVED')}
-              size='small'
-            >
-              <CheckCircleOutline />
-              <span style={{ marginLeft: '4px', fontSize: '0.8rem' }}>Approve</span>
-            </IconButton>
-          )
-        } else {
-          // For 'INREVIEW' or any other status
-          return (
-            <div>
-              <IconButton
-                color='success'
-                onClick={() => handleStatusUpdate(info.row.original.id, 'APPROVED')}
-                size='small'
-              >
-                <CheckCircleOutline />
-              </IconButton>
-              <IconButton
-                color='error'
-                onClick={() => handleStatusUpdate(info.row.original.id, 'REJECTED')}
-                size='small'
-              >
-                <CancelOutlined />
-              </IconButton>
-            </div>
-          )
-        }
-      }
-    }),
+              if (status === 'APPROVED') {
+                return (
+                  <IconButton
+                    color='error'
+                    onClick={() => handleStatusUpdate(info.row.original.id, 'REJECTED')}
+                    size='small'
+                  >
+                    <CancelOutlined />
+                    <span style={{ marginLeft: '4px', fontSize: '0.8rem' }}>Reject</span>
+                  </IconButton>
+                )
+              } else if (status === 'REJECTED') {
+                return (
+                  <IconButton
+                    color='success'
+                    onClick={() => handleStatusUpdate(info.row.original.id, 'APPROVED')}
+                    size='small'
+                  >
+                    <CheckCircleOutline />
+                    <span style={{ marginLeft: '4px', fontSize: '0.8rem' }}>Approve</span>
+                  </IconButton>
+                )
+              } else {
+                // For 'INREVIEW' or any other status
+                return (
+                  <div>
+                    <IconButton
+                      color='success'
+                      onClick={() => handleStatusUpdate(info.row.original.id, 'APPROVED')}
+                      size='small'
+                    >
+                      <CheckCircleOutline />
+                    </IconButton>
+                    <IconButton
+                      color='error'
+                      onClick={() => handleStatusUpdate(info.row.original.id, 'REJECTED')}
+                      size='small'
+                    >
+                      <CancelOutlined />
+                    </IconButton>
+                  </div>
+                )
+              }
+            }
+          })
+        ]
+      : []),
     columnHelper.accessor('id', {
       header: '',
       cell: info => {
@@ -209,8 +229,36 @@ const ApplicationsTable: React.FC = () => {
     getCoreRowModel: getCoreRowModel()
   })
 
+  const handleNavigate = () => {
+    router.push('/grantApplication')
+  }
+
   return (
     <>
+      <Button
+        variant='contained'
+        type='submit'
+        onClick={() => {
+          handleExport(data)
+        }}
+        style={{ marginBottom: '20px' }}
+      >
+        Export Csv
+      </Button>
+      {isAdmin ? (
+        <></>
+      ) : (
+        <Button
+          variant='contained'
+          type='submit'
+          onClick={() => {
+            handleNavigate()
+          }}
+          style={{ marginBottom: '20px', marginLeft: '20px' }}
+        >
+          Create New
+        </Button>
+      )}
       {isLoading ? (
         <Box display='flex' justifyContent='center' alignItems='center' height='200px'>
           <CircularProgress />

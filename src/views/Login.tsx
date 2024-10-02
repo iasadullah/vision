@@ -119,11 +119,7 @@ const LoginV2 = ({ mode }: { mode: Mode }) => {
 
         localStorage.setItem('userData', JSON.stringify(userData))
 
-        if (userData.role === 'admin') {
-          router.push('/home')
-        } else {
-          router.push('/profile')
-        }
+        router.push('/home')
       } else {
         setErrorMsg(response.message || 'Invalid credentials')
       }
@@ -215,7 +211,7 @@ const LoginV2 = ({ mode }: { mode: Mode }) => {
                   </Typography>
                 </div> */}
                 {errorMsg && (
-                  <Typography color='error' align='center'>
+                  <Typography color='error' align='center' style={{ textTransform: 'capitalize' }}>
                     {errorMsg}
                   </Typography>
                 )}
