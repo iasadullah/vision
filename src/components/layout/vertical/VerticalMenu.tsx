@@ -19,6 +19,7 @@ import StyledVerticalNavExpandIcon from '@menu/styles/vertical/StyledVerticalNav
 // Style Imports
 import menuItemStyles from '@core/styles/vertical/menuItemStyles'
 import menuSectionStyles from '@core/styles/vertical/menuSectionStyles'
+import { useUserContext } from '@/context/UserContext'
 
 type RenderExpandIconProps = {
   open?: boolean
@@ -36,6 +37,8 @@ const RenderExpandIcon = ({ open, transitionDuration }: RenderExpandIconProps) =
 )
 
 const VerticalMenu = ({ scrollMenu }: Props) => {
+  const { userData } = useUserContext()
+
   // Hooks
   const theme = useTheme()
   const verticalNavOptions = useVerticalNav()
@@ -74,6 +77,11 @@ const VerticalMenu = ({ scrollMenu }: Props) => {
         <MenuItem href='/profile' icon={<i className='ri-user-line' />}>
           Profile
         </MenuItem>
+        {userData.role === 'admin' && (
+          <MenuItem href='/registration-request' icon={<i className='ri-file-list-3-line' />}>
+            Registration Request
+          </MenuItem>
+        )}
       </Menu>
       {/* <Menu
         popoutMenuOffset={{ mainAxis: 10 }}

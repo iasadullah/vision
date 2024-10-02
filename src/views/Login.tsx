@@ -1,7 +1,7 @@
 'use client'
 
 // React Imports
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 // Next Imports
 import { useRouter } from 'next/navigation'
@@ -75,14 +75,14 @@ const LoginV2 = ({ mode }: { mode: Mode }) => {
   const authBackground = useImageVariant(mode, lightImg, darkImg)
   const { handleUserData } = useUserContext()
 
-  useEffect(() => {
-    // Check if user is already logged in
-    const token = localStorage.getItem('token')
+  // useEffect(() => {
+  //   // Check if user is already logged in
+  //   const token = localStorage.getItem('token')
 
-    if (token) {
-      router.push('/home')
-    }
-  }, [router])
+  //   if (token) {
+  //     router.push('/home')
+  //   }
+  // }, [router])
 
   const characterIllustration = useImageVariant(
     mode,
@@ -105,16 +105,27 @@ const LoginV2 = ({ mode }: { mode: Mode }) => {
       })
 
       if (typeof response.result === 'object') {
-        handleUserData(response.result) // Update user data in context
-        localStorage.setItem('profile', JSON.stringify(response.result))
-        localStorage.setItem('role', response.result.role)
+        const userData = {
+          ...response.result,
+          role: response.result.role.toLowerCase() as 'admin' | 'alumni'
+        }
+
+        handleUserData(userData) // Update user data in context
+        localStorage.setItem('profile', JSON.stringify(userData))
+        localStorage.setItem('role', userData.role)
         localStorage.setItem('token', response.result.token)
 
         if (typeof window !== 'undefined') {
           ;(window as any).authToken = response.result.token
         }
 
-        router.push('/home')
+        localStorage.setItem('userData', JSON.stringify(userData))
+
+        if (userData.role === 'admin') {
+          router.push('/admin-dashboard')
+        } else {
+          router.push('/profile')
+        }
       } else {
         setErrorMsg(response.message || 'Invalid credentials')
       }

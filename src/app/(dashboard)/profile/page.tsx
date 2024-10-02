@@ -5,7 +5,7 @@ import { UserContext } from '../../../context/UserContext'
 import Profile from '@/views/Profile'
 
 export default function Page() {
-  const { UserData, handleUserData } = useContext(UserContext)
+  const { userData, handleUserData } = useContext(UserContext)
   const [profilData, setProfilData] = useState<any>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [originalProfile, setOriginalProfile] = useState<any>(null)
@@ -16,14 +16,14 @@ export default function Page() {
     if (profileString) {
       const profile = JSON.parse(profileString)
 
-      if (!UserData) {
+      if (!userData) {
         setProfilData(profile)
         handleUserData(profile)
       }
-    } else if (UserData) {
-      setProfilData(UserData)
+    } else if (userData) {
+      setProfilData(userData)
     }
-  }, [UserData, handleUserData])
+  }, [userData, handleUserData])
 
   const handleEditClick = () => {
     setIsEditing(!isEditing)

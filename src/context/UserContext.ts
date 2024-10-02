@@ -1,12 +1,18 @@
 import { createContext, useContext } from 'react'
 
-interface UserContextType {
-  UserData: any
-  handleUserData: (val: any) => void
+export interface UserData {
+  role?: 'admin' | 'alumni'
+
+  // Add other user properties here
+}
+
+export interface UserContextType {
+  userData: UserData
+  handleUserData: (val: UserData) => void
 }
 
 export const UserContext = createContext<UserContextType>({
-  UserData: {},
+  userData: {}, // or { role: undefined }
   handleUserData: () => {}
 })
 
