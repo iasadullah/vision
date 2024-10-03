@@ -12,7 +12,10 @@ import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import classnames from 'classnames'
-import { Box, CircularProgress } from '@mui/material'
+
+import { Box, CircularProgress, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+
+import AppReactDatepicker from '@/components/AppReactDatepicker'
 
 interface IAgentProfileProps {
   agentProfile: any
@@ -131,7 +134,7 @@ const Profile = (props: IAgentProfileProps) => {
                         onChange={props.handleInputChange}
                       />
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    {/* <Grid item xs={12} sm={6}>
                       <TextField
                         fullWidth
                         label='DOB'
@@ -139,6 +142,25 @@ const Profile = (props: IAgentProfileProps) => {
                         placeholder='Enter your DOB'
                         value={props.agentProfile?.dob || ''}
                         onChange={props.handleInputChange}
+                      />
+                    </Grid> */}
+                    <Grid item xs={12} sm={6}>
+                      <AppReactDatepicker
+                        selected={props.agentProfile?.dob ? new Date(props.agentProfile.dob) : null}
+                        showYearDropdown
+                        showMonthDropdown
+                        onChange={date => {
+                          const event = {
+                            target: {
+                              name: 'dob',
+                              value: date ? date.toISOString().split('T')[0] : ''
+                            }
+                          }
+
+                          props.handleInputChange(event)
+                        }}
+                        placeholder='YYYY-MM-DD'
+                        customInput={<TextField fullWidth label='Birth Date' name='dob' placeholder='YYYY-MM-DD' />}
                       />
                     </Grid>
 
@@ -162,15 +184,25 @@ const Profile = (props: IAgentProfileProps) => {
                         onChange={props.handleInputChange}
                       />
                     </Grid>
+
                     <Grid item xs={12} sm={6}>
-                      <TextField
-                        fullWidth
-                        label='Employment Reqion'
-                        name='employmentReqion'
-                        placeholder='Enter your Employment Reqion'
-                        value={props.agentProfile?.employmentReqion || ''}
-                        onChange={props.handleInputChange}
-                      />
+                      <FormControl fullWidth>
+                        <InputLabel>Employment Region</InputLabel>
+                        <Select
+                          name='employmentReqion'
+                          label='Employment Region'
+                          value={props.agentProfile?.employmentReqion || ''}
+                          onChange={props.handleInputChange}
+                        >
+                          <MenuItem value='Islamabad'>Islamabad</MenuItem>
+                          <MenuItem value='Punjab'>Punjab</MenuItem>
+                          <MenuItem value='Khyber Pakhtunkhwa'>Khyber Pakhtunkhwa</MenuItem>
+                          <MenuItem value='Sindh'>Sindh</MenuItem>
+                          <MenuItem value='Balochistan'>Balochistan</MenuItem>
+                          <MenuItem value='Gilgit Baltistan'>Gilgit Baltistan</MenuItem>
+                          <MenuItem value='Azad Jammu & Kashmir'>Azad Jammu & Kashmir</MenuItem>
+                        </Select>
+                      </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField

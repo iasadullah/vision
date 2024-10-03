@@ -85,6 +85,12 @@ const VerticalMenu = ({ scrollMenu }: Props) => {
             Registration Request
           </MenuItem>
         )}
+        <MenuItem href='/jobs' icon={<i className='ri-user-line' />}>
+          Job opportunity
+        </MenuItem>
+        <MenuItem href='/connectivity' icon={<i className='ri-user-line' />}>
+          Connectivity
+        </MenuItem>
       </Menu>
       {/* <Menu
         popoutMenuOffset={{ mainAxis: 10 }}
